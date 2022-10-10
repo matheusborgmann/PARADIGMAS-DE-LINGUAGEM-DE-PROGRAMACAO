@@ -4,11 +4,17 @@ Turno: noturno
 */
 #include <iostream>
 #include <string>
+#include <limits> // for std::numeric_limits
+
+#include "header.hh"
 
 using namespace std;
 
 string name[30];
-
+int age[30];
+float media[30];
+string level[30];
+/* 
 class Alunos {
 public:
   string nome;
@@ -16,12 +22,12 @@ public:
   float notas[5];
   string nivel;
 };
-Alunos aluno[30];
+Alunos aluno[30]; */
 
 void menu();
 void registrarAluno(int contadorDeAlunos);
 string caixaAlta(string nome);
-void registrarNotas(int contadorDeAlunos);
+/* void registrarNotas(int contadorDeAlunos); */
 void exibirCalouros(int contadorDeAlunos);
 void exibirVeteranos(int contadorDeAlunos);
 void mediaGeral(int contadorDeAlunos);
@@ -36,7 +42,6 @@ int main() { menu(); }
 void menu() {
   int opcao, contadorDeAlunos = 0;
   
-
   do {
     cout << "\n0 - Encerrar sistema\n1 - Registrar um(a) aluno(a)\n2 - "
             "Registrar notas\n3 - Listar todos os alunos registrados\n4 - "
@@ -59,29 +64,18 @@ void menu() {
       contadorDeAlunos++;
       break;
     case 2:
-      registrarNotas(contadorDeAlunos);
+      /* registrarNotas(contadorDeAlunos); */
       break;
     case 3:
       for (int contador = 0; contador < contadorDeAlunos; contador++) {
-        float media = 0;
-        bool temNotas = true;
+
         cout << endl
              << name[contador] << endl
-             << aluno[contador].idade << " anos" << endl
-             << aluno[contador].nivel << endl;
-
-        for (int i = 0; i < 5; i++) {
-          if (aluno[contador].notas[i] <= 0) {
-            cout << aluno[contador].nome
-                 << " não possui notas registradas ainda" << endl;
-            temNotas = false;
-            break;
-          } else {
-          }
-          if (temNotas == true) {
-            cout << "Notas " << i << ": " << aluno[contador].notas[i] << endl;
-          }
-        }
+             << age[contador] << " anos" << endl
+             << level[contador] << endl
+             << media[contador] << endl;
+              
+        
       }
       break;
     case 4:
@@ -116,197 +110,113 @@ void menu() {
 }
 
 void registrarAluno(int contadorDeAlunos) {
-  int i = contadorDeAlunos;
-  string nome, nivel;
-  cin.ignore();
-
-  cout << "\nDigite o nome do(a) aluno(a)" << endl;
-  getline(cin, nome);
+  int i = contadorDeAlunos, idadeInt;
+  string nome, nivel, idadeString;
+  
+   
  
+  cout << "\nDigite o nome do(a) aluno(a)" << endl;
+  cin.ignore(); 
+  getline(cin, nome);
+
   nome = caixaAlta(nome);
- name[i] = nome;
+  name[i] = nome;
 
-  cout << "\nDigite quantos anos o(a) aluno(a) tem" << endl;
-  cin >> aluno[i].idade;
+  cout << "\nDigite quantos anos o(a) aluno(a) tem: ";
+  cin >> idadeInt;
 
-  cout << "\nDigite o nivel do(a) aluno(a) - calouro ou veterano" << endl;
-  cin >> nivel;
-
-  nivel = caixaAlta(nivel);
-
-  do{
-  if (nivel != "Calouro" && nivel != "Veterano") {
-    cout << "Nivel invalido! Por favor, digite um nivel valido" << endl;
-    cin >> nivel;
-    nivel = caixaAlta(nivel);
+  while(true){
+  
+  if(cin.fail()){
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(),'\n');
+    cout << "Ponha uma idade válida e em números!" << endl;
+    cin>>idadeInt;
   }
-    }while(nivel != "Calouro" && nivel != "Veterano");
-  aluno[i].nivel = nivel;
-
-  for (int cont = 0; cont < 5; cont++)
-    aluno[i].notas[cont] = -1;
-}
-
-string caixaAlta(string nome) {
-
-  for (int x = 0; x < nome.length(); x++) {
-    if (x == 0) {
-      nome[x] = toupper(nome[x]);
-    } else if (nome[x - 1] == ' ') {
-      nome[x] = toupper(nome[x]);
-    }
+  if(!cin.fail()){
+    age[i] = idadeInt;
+    break;
   }
+  }
+  
+  level[i] = nivelDoAluno();
 
-  return nome;
+  cout << "Digite a media: " << endl;
+  cin >> media[i];
+ 
+  while(media[i] > 10 || media[i] < 0){
+      
+  cout << "Media inválida. Insira um valor entre 0 e 10";
+  cin >> media[i];
+  }
+  
 }
 
-void registrarNotas(int contadorDeAlunos) {
-  string nomeAluno;
-  int op, numeroDoAluno, cont;
-  float notas;
-  int totalDeAlunos = contadorDeAlunos;
 
-  do {
-    cout << "\n0 - Retornar para o menu anterior\n1 - Procurar aluno por nome"
-         << endl;
-    cin >> op;
-
-    switch (op) {
-    case 0:
-      break;
-    case 1:
-      cin.ignore();
-      cout << "\nDigite o nome do(a) aluno(a): " << endl;
-      getline(cin, nomeAluno);
-      nomeAluno = caixaAlta(nomeAluno);
-
-      for (int i = 0; i <= totalDeAlunos; i++) {
-        if (name[i] == nomeAluno) {
-          numeroDoAluno = i;
-          cout << "Aluno " << aluno[numeroDoAluno].nome;
-          break;
-        }
-      }
-
-      for (cont = 0; cont < 5; cont++) {
-        cout << "\nDigite a nota " << cont + 1 << endl;
-        cin >> notas;
-        do {
-          if (notas < 0 || notas > 10) {
-            cout << "\nNotas não podem ser menores que 0 ou maiores que "
-                    "10\nDigite a nota novamente: ";
-            cin >> notas;
-          }
-        } while (notas < 0 || notas > 10);
-        aluno[numeroDoAluno].notas[cont] = notas;
-      }
-
-      for (cont = 0; cont < 5; cont++) {
-        cout << "Nota " << cont << ":" << aluno[numeroDoAluno].notas[cont]
-             << endl;
-      }
-
-      break;
-    default:
-      cout << "Opcao invalida";
-      break;
-    }
-  } while (op != 0);
-}
-
+ 
 void exibirCalouros(int contadorDeAlunos) {
 
   for (int i = 0; i < contadorDeAlunos; i++) {
-    bool temNotas = true;
-    float media = 0;
-    if (aluno[i].nivel == "Calouro") {
+    
+    if (level[i] == "Calouro") {
       cout << endl
            << name[i] << endl
-           << aluno[i].idade << " anos" << endl
-           << aluno[i].nivel << endl;
-
-      for (int j = 0; j < 5; j++) {
-        if (aluno[i].notas[j] <= 0) {
-          cout << name[i] << " não possui notas registradas ainda"
-               << endl;
-          temNotas = false;
-          break;
-        } else {
-          media += aluno[i].notas[j];
-        }
-      }
-      if (temNotas == true) {
-        media = media / 5;
-        cout << "Media: " << media << endl;
-      }
+           << age[i] << " anos" << endl
+           << level[i] << endl
+           << "Media: " << media[i] << endl;
     }
   }
 }
 
+
 void exibirVeteranos(int contadorDeAlunos) {
   for (int i = 0; i < contadorDeAlunos; i++) {
-    float media = 0;
-    bool temNotas = true;
-    if (aluno[i].nivel == "Veterano") {
+    
+    if (level[i] == "Veterano") {
       cout << endl
            << name[i] << endl
-           << aluno[i].idade << " anos" << endl
-           << aluno[i].nivel << endl;
-
-      for (int j = 0; j < 5; j++) {
-        if (aluno[i].notas[j] <= 0) {
-          cout << name[i] << " não possui notas registradas ainda"
-               << endl;
-          temNotas = false;
-          break;
-        } else {
-          media += aluno[i].notas[j];
-        }
-      }
-      if (temNotas == true) {
-        media = media / 5;
-        cout << "Media: " << media << endl;
-      }
+           << age[i] << " anos" << endl
+           <<level[i] << endl
+           <<"Media: " << media[i] << endl;
+      
     }
   }
 }
 
 void mediaGeral(int contadorDeAlunos) {
+  
   float mediaTotal = 0;
   int alunos = 0;
 
   for (int i = 0; i < contadorDeAlunos; i++) {
-    float media = 0;
     alunos++;
-    for (int j = 0; j < 5; j++) {
-      media += aluno[i].notas[j];
-    }
-    media = media / 5;
-    mediaTotal += media;
+      
+    mediaTotal += media[i];
   }
+  
   mediaTotal = mediaTotal / alunos;
 
   cout << endl << "Media total da media dos alunos: " << mediaTotal << endl;
+  
 }
 
 void mediaCalouros(int contadorDeAlunos) {
+  
   float mediaTotal = 0;
   int calouros = 0;
 
   for (int i = 0; i < contadorDeAlunos; i++) {
-    float media = 0;
-    if (aluno[i].nivel == "Calouro") {
+    
+    if (level[i] == "Calouro") {
       calouros++;
-      for (int j = 0; j < 5; j++) {
-        media += aluno[i].notas[j];
-      }
-      media = media / 5;
-      mediaTotal += media;
+      mediaTotal += media[i];
     }
   }
+  
   mediaTotal = mediaTotal / calouros;
 
   cout << endl << "Media total da media dos calouros: " << mediaTotal << endl;
+  
 }
 
 void mediaVeteranos(int contadorDeAlunos) {
@@ -314,14 +224,12 @@ void mediaVeteranos(int contadorDeAlunos) {
   int veteranos = 0;
 
   for (int i = 0; i < contadorDeAlunos; i++) {
-    float media = 0;
-    if (aluno[i].nivel == "Veterano") {
+
+    if (level[i] == "Veterano") {
+      
       veteranos++;
-      for (int j = 0; j < 5; j++) {
-        media += aluno[i].notas[j];
-      }
-      media = media / 5;
-      mediaTotal += media;
+      mediaTotal += media[i];
+      
     }
   }
   mediaTotal = mediaTotal / veteranos;
@@ -331,43 +239,35 @@ void mediaVeteranos(int contadorDeAlunos) {
 
 void listarAlunosSuperiores(int contadorDeAlunos) {
   for (int i = 0; i < contadorDeAlunos; i++) {
-    float media = 0;
-    for (int j = 0; j < 5; j++) {
-      media += aluno[i].notas[j];
-    }
-    media = media / 5;
-    if (media >= 6) {
-      cout << endl << name[i] << endl << "Media: " << media << endl;
+    
+    if (media[i] >= 6) {
+      
+      cout << endl << name[i] << endl << "Media: " << media[i] << endl;
+      
     }
   }
 }
 
 void listarCalourosSuperiores(int contadorDeAlunos) {
   for (int i = 0; i < contadorDeAlunos; i++) {
-    float media = 0;
-    if (aluno[i].nivel == "Calouro") {
-      for (int j = 0; j < 5; j++) {
-        media += aluno[i].notas[j];
-      }
-    }
-    media = media / 5;
-    if (media >= 6) {
-      cout << endl << name[i] << endl << "Media: " << media << endl;
+
+    if (level[i] == "Calouro") {
+      
+    if (media[i] >= 6) {
+      cout << endl << name[i] << endl << "Media: " << media[i] << endl;
     }
   }
+}
 }
 
 void listarVeteranosSuperiores(int contadorDeAlunos) {
   for (int i = 0; i < contadorDeAlunos; i++) {
-    float media = 0;
-    if (aluno[i].nivel == "Veterano") {
-      for (int j = 0; j < 5; j++) {
-        media += aluno[i].notas[j];
+    
+      if (level[i] == "Veterano") {
+    
+        if (media[i] >= 6) {
+          cout << endl << name[i] << endl << "Media: " << media[i] << endl;
+        }
       }
-    }
-    media = media / 5;
-    if (media >= 6) {
-      cout << endl << name[i] << endl << "Media: " << media << endl;
-    }
   }
 }
