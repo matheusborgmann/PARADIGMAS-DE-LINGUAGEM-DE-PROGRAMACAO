@@ -4,6 +4,6 @@
 - calcular a média das médias de todos os alunos armazenados (FEITO)
 - calcular a média das médias dos alunos calouros armazenados (FEITO)
 - calcular a média das médias dos alunos veteranos armazenados (FEITO)
-- os nomes dos alunos com média maior ou igual a seis (JUAN)
+- os nomes dos alunos com média maior ou igual a seis (FEITO)
 - os nomes dos alunos calouros com média maior ou igual a seis (FEITO)
 - os nomes dos alunos veteranos com média maior ou igual a seis (FEITO)
