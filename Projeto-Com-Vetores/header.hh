@@ -18,15 +18,17 @@ string nivelDoAluno(){
   
   cout << "\nDigite o nivel do(a) aluno(a) - calouro ou veterano" << endl;
   cin >> nivel;
-
+  
   nivel = caixaAlta(nivel);
+
   
   while(nivel != "Calouro" && nivel != "Veterano"){
-    if (nivel != "Calouro" && nivel != "Veterano" ) {
+      
       cout << "Nivel invalido! Por favor, digite um nivel valido" << endl;
       cin >> nivel;
+      
       nivel = caixaAlta(nivel);
-    }
+    
   }
 
   return nivel;
