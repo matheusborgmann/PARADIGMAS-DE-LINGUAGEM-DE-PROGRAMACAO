@@ -33,12 +33,6 @@ void listarAlunosSuperiores(int contadorDeAlunos);
 void listarCalourosSuperiores(int contadorDeAlunos);
 void listarVeteranosSuperiores(int contadorDeAlunos);
 
-void mediaCalouros(int contadorDeAlunos);
-void mediaVeteranos(int contadorDeAlunos);
-void listarAlunosSuperiores(int contadorDeAlunos);
-void listarCalourosSuperiores(int contadorDeAlunos);
-void listarVeteranosSuperiores(int contadorDeAlunos);
-
 int main() { menu(); }
 
 void menu() {
