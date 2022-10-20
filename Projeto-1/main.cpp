@@ -4,9 +4,9 @@ Vinicius Selau da Silva Turno: noturno
 */
 #include <iomanip>
 #include <iostream>
+#include <limits>
 #include <stdlib.h>
 #include <string>
-#include <limits> 
 
 #include "header.hh"
 
@@ -61,7 +61,7 @@ void menu() {
       break;
     case 2:
       for (int contador = 0; contador < contadorDeAlunos; contador++) {
-        
+
         imprimirAlunos(contador);
       }
       break;
@@ -95,22 +95,7 @@ void menu() {
     }
   } while (opcao != 0);
 }
-/*
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-*/  
+
 void registrarAluno(int contadorDeAlunos) {
   int i = contadorDeAlunos, idadeInt;
   string nome, nivel;
@@ -125,72 +110,48 @@ void registrarAluno(int contadorDeAlunos) {
 
   cout << "\nDigite a quantos anos o(a) aluno(a) tem" << endl;
   cin >> idadeInt;
-  
 
-  while(true){
-  
-  if(cin.fail()){
-    cin.clear();
-    cin.ignore(numeric_limits<streamsize>::max(),'\n');
-    cout << "\nPonha uma idade válida e em números!\n" << endl;
-    cin>>idadeInt;
-  }
-  if(!cin.fail()){
-    lista_Alunos[i].idade = idadeInt;
-    break;
-  }
+  if (idadeInt <= 0) {
+    do {
+
+      cout << "Idade errada, insira uma válida: ";
+      cin >> idadeInt;
+
+    } while (idadeInt <= 0);
   }
 
-  cin.clear();
+  lista_Alunos[i].idade = idadeInt;
 
   lista_Alunos[i].nivel = nivelDoAluno();
 
   cout << "Digite a media: " << endl;
   cin >> nota;
- 
-  while(true){
-    if(cin.fail()){
-      cin.clear();
-      cin.ignore(numeric_limits<streamsize>::max(),'\n');
+
+  if (nota < 0 || nota > 10) {
+    while (nota < 0 || nota > 10) {
+
       cout << "Media inválida. Insira um valor entre 0 e 10\n";
       cin >> nota;
+    }
   }
-     if(!cin.fail()){
-    lista_Alunos[i].media = nota;
-    break;
-  }
-  }
+
+  lista_Alunos[i].media = nota;
 }
-/*
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-*/  
-void imprimirAlunos(int i){
+
+void imprimirAlunos(int i) {
 
   cout << endl
-           << lista_Alunos[i].nome << endl
-           << lista_Alunos[i].idade << " anos" << endl
-           <<lista_Alunos[i].nivel << endl
-           <<"Media: " << fixed << setprecision(2) << lista_Alunos[i].media << endl;
+       << lista_Alunos[i].nome << endl
+       << lista_Alunos[i].idade << " anos" << endl
+       << lista_Alunos[i].nivel << endl
+       << "Media: " << fixed << setprecision(2) << lista_Alunos[i].media
+       << endl;
 }
-
 
 void exibirCalouros(int contadorDeAlunos) {
 
   for (int i = 0; i < contadorDeAlunos; i++) {
-    
+
     if (lista_Alunos[i].nivel == "Calouro") {
       imprimirAlunos(i);
     }
@@ -199,42 +160,30 @@ void exibirCalouros(int contadorDeAlunos) {
 
 void exibirVeteranos(int contadorDeAlunos) {
   for (int i = 0; i < contadorDeAlunos; i++) {
-    
+
     if (lista_Alunos[i].nivel == "Veterano") {
       imprimirAlunos(i);
-      
     }
   }
 }
-/*
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-*/  
+
 void mediaGeral(int contadorDeAlunos) {
   float mediaTotal = 0;
   int alunos = 0;
 
   for (int i = 0; i < contadorDeAlunos; i++) {
     alunos++;
-      
+
     mediaTotal += lista_Alunos[i].media;
   }
-  
+
   mediaTotal = mediaTotal / alunos;
 
-  cout << endl << "Media total da media dos alunos: " << mediaTotal << endl;
+  if (alunos != 0) {
+    cout << endl << "Media total da media dos alunos: " << mediaTotal << endl;
+  } else {
+    cout << endl << "Nenhum aluno registrado!" << endl;
+  }
 }
 
 void mediaCalouros(int contadorDeAlunos) {
@@ -242,16 +191,20 @@ void mediaCalouros(int contadorDeAlunos) {
   int calouros = 0;
 
   for (int i = 0; i < contadorDeAlunos; i++) {
-    
+
     if (lista_Alunos[i].nivel == "Calouro") {
       calouros++;
       mediaTotal += lista_Alunos[i].media;
     }
   }
-  
+
   mediaTotal = mediaTotal / calouros;
 
-  cout << endl << "Media total da media dos calouros: " << mediaTotal << endl;
+  if (calouros != 0) {
+    cout << endl << "Media total da media dos calouros: " << mediaTotal << endl;
+  } else {
+    cout << endl << "Nenhum calouro registrado!" << endl;
+  }
 }
 
 void mediaVeteranos(int contadorDeAlunos) {
@@ -261,63 +214,50 @@ void mediaVeteranos(int contadorDeAlunos) {
   for (int i = 0; i < contadorDeAlunos; i++) {
 
     if (lista_Alunos[i].nivel == "Veterano") {
-      
       veteranos++;
       mediaTotal += lista_Alunos[i].media;
-      
     }
   }
   mediaTotal = mediaTotal / veteranos;
 
-  cout << endl << "Media total da media dos veteranos: " << mediaTotal << endl;
+  if (veteranos != 0) {
+    cout << endl
+         << "Media total da media dos veteranos: " << mediaTotal << endl;
+  } else {
+    cout << endl << "Nenhum veterano registrado!" << endl;
+  }
 }
-/*
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-*/  
+
 void listarAlunosSuperiores(int contadorDeAlunos) {
   for (int i = 0; i < contadorDeAlunos; i++) {
-    
+
     if (lista_Alunos[i].media >= 6) {
-      
+
       imprimirAlunos(i);
-      
     }
   }
 }
 
 void listarCalourosSuperiores(int contadorDeAlunos) {
- for (int i = 0; i < contadorDeAlunos; i++) {
+  for (int i = 0; i < contadorDeAlunos; i++) {
 
     if (lista_Alunos[i].nivel == "Calouro") {
-      
-    if (lista_Alunos[i].media >= 6) {
-      imprimirAlunos(i);
+
+      if (lista_Alunos[i].media >= 6) {
+        imprimirAlunos(i);
+      }
     }
   }
-}
 }
 
 void listarVeteranosSuperiores(int contadorDeAlunos) {
   for (int i = 0; i < contadorDeAlunos; i++) {
-    
-      if (lista_Alunos[i].nivel == "Veterano") {
-    
-        if (lista_Alunos[i].media >= 6) {
-          imprimirAlunos(i);
-        }
+
+    if (lista_Alunos[i].nivel == "Veterano") {
+
+      if (lista_Alunos[i].media >= 6) {
+        imprimirAlunos(i);
       }
+    }
   }
 }
